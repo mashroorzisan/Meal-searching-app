@@ -32,5 +32,29 @@ const searchFood = () => {
 }
 
 const displayMealId = (id) => {
-    console.log('clicked', id)
+
+    const url = `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`
+    const food = () => {
+        fetch(url)
+            .then(res => res.json())
+            // .then(data => console.log(data.meals[0].strMeal))
+            .then(data => mealDetails(data))
+    }
+    food();
+}
+const mealDetails = (meal) => {
+    const mealContainer = document.getElementById('meal-container');
+    mealContainer.innerHTML = '';
+    const newContainer = document.createElement('div');
+    newContainer.innerHTML = `
+        <div class="card text-bg-dark">
+        <img src="${meal.meals[0].strMealThumb}" class="card-img" alt="...">
+        <div class="card-img-overlay">
+            <h5 class="card-title">${meal.meals[0].strMeal}</h5>
+            <p class="card-text">${meal.meals[0].strInstructions.slice(0, 200)}</p>
+            <p class="card-text"><small><a href="${meal.meals[0]?.strYoutube}">YouTube</a></small></p>
+        </div>
+        </div>
+    `
+    mealContainer.appendChild(newContainer)
 }
